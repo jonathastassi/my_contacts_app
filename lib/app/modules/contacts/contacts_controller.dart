@@ -3,6 +3,8 @@ import 'package:mobx/mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_contacts_app/app/modules/contacts/models/contact_model.dart';
 import 'package:my_contacts_app/app/modules/contacts/repositories/interfaces/contact_repository_interface.dart';
+import 'package:my_contacts_app/app/shared/models/postal_code_model.dart';
+import 'package:my_contacts_app/app/shared/services/postal_code_service.dart';
 
 part 'contacts_controller.g.dart';
 
@@ -11,6 +13,7 @@ class ContactsController = _ContactsControllerBase with _$ContactsController;
 
 abstract class _ContactsControllerBase with Store {
   final IContactRepository repository = Modular.get<IContactRepository>();
+  final PostalCodeService postalCodeService = Modular.get();
 
   @observable
   ObservableList<ContactModel> list = <ContactModel>[].asObservable();
@@ -22,19 +25,15 @@ abstract class _ContactsControllerBase with Store {
     this.populateList();
   }
 
-  Future populateList() async {
-    print("populateList");
+  populateList() async {
     list = <ContactModel>[].asObservable();
     List<ContactModel> listLocal = await this.repository.getAll();
-    print(listLocal.length);
 
     if (listLocal == null) {
       list = <ContactModel>[].asObservable();
     } else {
       list.addAll(listLocal);
     }
-
-    print(list.length);
   }
 
   @action
@@ -69,5 +68,26 @@ abstract class _ContactsControllerBase with Store {
       await this.populateList();
     }
     return id;
+  }
+
+  findPortalCode() async {
+    PostalCodeModel postalCodeModel =
+        await this.postalCodeService.find(contact.postalCode);
+
+    print(postalCodeModel.logradouro);
+    if (postalCodeModel != null) {
+      contact.setAddress(postalCodeModel.logradouro);
+      contact.setNeighborhood(postalCodeModel.bairro);
+      contact.setCity(postalCodeModel.localidade);
+      contact.setState(postalCodeModel.uf);
+    }
+  }
+
+  @action
+  updatePostalCode(String value) async {
+    contact.setPostalCode(value);
+    if (contact.postalCode.length == 9) {
+      await this.findPortalCode();
+    }
   }
 }

@@ -57,6 +57,22 @@ mixin _$ContactsController on _ContactsControllerBase, Store {
     return _$addContactAsyncAction.run(() => super.addContact());
   }
 
+  final _$removeContactAsyncAction =
+      AsyncAction('_ContactsControllerBase.removeContact');
+
+  @override
+  Future<int> removeContact() {
+    return _$removeContactAsyncAction.run(() => super.removeContact());
+  }
+
+  final _$findPortalCodeAsyncAction =
+      AsyncAction('_ContactsControllerBase.findPortalCode');
+
+  @override
+  Future findPortalCode() {
+    return _$findPortalCodeAsyncAction.run(() => super.findPortalCode());
+  }
+
   final _$_ContactsControllerBaseActionController =
       ActionController(name: '_ContactsControllerBase');
 
@@ -66,6 +82,28 @@ mixin _$ContactsController on _ContactsControllerBase, Store {
         name: '_ContactsControllerBase.createContact');
     try {
       return super.createContact();
+    } finally {
+      _$_ContactsControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setContact(ContactModel contact) {
+    final _$actionInfo = _$_ContactsControllerBaseActionController.startAction(
+        name: '_ContactsControllerBase.setContact');
+    try {
+      return super.setContact(contact);
+    } finally {
+      _$_ContactsControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic updatePostalCode(String value) {
+    final _$actionInfo = _$_ContactsControllerBaseActionController.startAction(
+        name: '_ContactsControllerBase.updatePostalCode');
+    try {
+      return super.updatePostalCode(value);
     } finally {
       _$_ContactsControllerBaseActionController.endAction(_$actionInfo);
     }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:my_contacts_app/app/modules/contacts/contacts_controller.dart';
 import 'package:my_contacts_app/app/modules/contacts/models/contact_model.dart';
 import 'package:my_contacts_app/app/shared/components/card_component.dart';
@@ -18,6 +20,10 @@ class ContactFormPage extends StatefulWidget {
 class _ContactFormPageState
     extends ModularState<ContactFormPage, ContactsController> {
   final _formKey = GlobalKey<FormState>();
+  final maskCEP = MaskTextInputFormatter(
+    mask: "#####-###",
+    filter: {"#": RegExp(r'[0-9]')},
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -69,34 +75,51 @@ class _ContactFormPageState
                   child: Column(
                     children: [
                       TextFormField(
+                        onChanged: controller.updatePostalCode,
                         initialValue: controller.contact.postalCode,
                         keyboardType: TextInputType.text,
-                        decoration: InputDecoration(labelText: "CEP"),
+                        inputFormatters: [maskCEP],
+                        decoration: InputDecoration(
+                          labelText: "CEP",
+                          helperText: "Digite o CEP para preencher o endereço",
+                        ),
                       ),
-                      TextFormField(
-                        initialValue: controller.contact.address,
-                        keyboardType: TextInputType.text,
-                        decoration: InputDecoration(labelText: "Rua"),
+                      Observer(
+                        builder: (_) => TextFormField(
+                          onChanged: controller.contact.setAddress,
+                          initialValue: controller.contact.address,
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(labelText: "Rua"),
+                        ),
                       ),
                       TextFormField(
                         initialValue: controller.contact.number,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(labelText: "Número"),
                       ),
-                      TextFormField(
-                        initialValue: controller.contact.neighborhood,
-                        keyboardType: TextInputType.text,
-                        decoration: InputDecoration(labelText: "Bairro"),
+                      Observer(
+                        builder: (_) => TextFormField(
+                          onChanged: controller.contact.setNeighborhood,
+                          initialValue: controller.contact.neighborhood,
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(labelText: "Bairro"),
+                        ),
                       ),
-                      TextFormField(
-                        initialValue: controller.contact.city,
-                        keyboardType: TextInputType.text,
-                        decoration: InputDecoration(labelText: "Cidade"),
+                      Observer(
+                        builder: (_) => TextFormField(
+                          onChanged: controller.contact.setCity,
+                          initialValue: controller.contact.city,
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(labelText: "Cidade"),
+                        ),
                       ),
-                      TextFormField(
-                        initialValue: controller.contact.state,
-                        keyboardType: TextInputType.text,
-                        decoration: InputDecoration(labelText: "Estado"),
+                      Observer(
+                        builder: (_) => TextFormField(
+                          onChanged: controller.contact.setState,
+                          initialValue: controller.contact.state,
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(labelText: "Estado"),
+                        ),
                       ),
                     ],
                   ),

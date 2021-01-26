@@ -1,5 +1,4 @@
 import 'package:my_contacts_app/app/pages/splash_screen/splash_screen_page.dart';
-
 import 'pages/splash_screen/splash_screen_controller.dart';
 import 'package:my_contacts_app/app/modules/contacts/contacts_module.dart';
 import 'app_controller.dart';

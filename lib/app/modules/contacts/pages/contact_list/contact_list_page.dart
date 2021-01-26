@@ -71,7 +71,7 @@ class _ContactListPageState
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           controller.createContact();
-          Modular.to.pushReplacementNamed("/contacts/form");
+          Modular.to.pushNamed("/contacts/form");
         },
         child: Icon(Icons.add),
       ),
