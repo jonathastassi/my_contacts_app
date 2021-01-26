@@ -71,7 +71,7 @@ class _ContactListPageState
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           controller.createContact();
-          Modular.to.pushNamed("/contacts/form");
+          Modular.to.pushReplacementNamed("/contacts/form");
         },
         child: Icon(Icons.add),
       ),
@@ -108,7 +108,7 @@ class _ContactListPageState
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              "${contact.address ?? "-"} - ${contact.number ?? "-"}, CEP ${contact.postalCode ?? "-"}, ${contact.neighborhood ?? "-"}, ${contact.city ?? "-"}-${contact.state ?? "-"}",
+              controller.contact.getAddress(),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -131,6 +131,14 @@ class _ContactListPageState
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
+        if (controller.contact == null) {
+          Center(
+            child: Text("Aguarde"),
+          );
+        }
+
+        String notExist = "-";
+
         return Container(
             width: double.maxFinite,
             child: Padding(
@@ -142,7 +150,7 @@ class _ContactListPageState
                     width: double.maxFinite,
                     alignment: Alignment.center,
                     child: Text(
-                      "Jonathas Tassi e Silva",
+                      "${controller.contact.name ?? "-"} ${controller.contact.lastName ?? ""}",
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -154,26 +162,34 @@ class _ContactListPageState
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        "Rua Sargento Luiz Fioco, 215",
-                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                      Expanded(
+                        child: Text(
+                          "Logradouro: ${controller.contact.address ?? notExist} - Número: ${controller.contact.number ?? "-"}",
+                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                        ),
                       ),
-                      Text(
-                        "Parque Imperial",
-                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                      Expanded(
+                        child: Text(
+                          "Bairro: ${controller.contact.neighborhood ?? notExist}",
+                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                        ),
                       ),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        "Salto-SP",
-                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                      Expanded(
+                        child: Text(
+                          "Cidade: ${controller.contact.city ?? notExist} - Estado: ${controller.contact.state ?? "-"}",
+                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                        ),
                       ),
-                      Text(
-                        "CEP 13323-777",
-                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                      Expanded(
+                        child: Text(
+                          "CEP: ${controller.contact.postalCode ?? notExist}",
+                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                        ),
                       ),
                     ],
                   ),
@@ -183,13 +199,17 @@ class _ContactListPageState
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        "11 94064-1278",
-                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                      Expanded(
+                        child: Text(
+                          "Telefone: ${controller.contact.phone ?? notExist}",
+                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                        ),
                       ),
-                      Text(
-                        "jonathastassi@hotmail.com",
-                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                      Expanded(
+                        child: Text(
+                          "E-mail: ${controller.contact.email ?? notExist}",
+                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                        ),
                       ),
                     ],
                   ),

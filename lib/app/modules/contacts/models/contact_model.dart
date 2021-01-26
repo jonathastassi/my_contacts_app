@@ -126,6 +126,9 @@ abstract class _ContactModelBase with Store {
   @action
   setEmail(String value) => this.email = value;
 
+  String getAddress() =>
+      "${this.address ?? "-"} - ${this.number ?? "-"}, CEP ${this.postalCode ?? "-"}, ${this.neighborhood ?? "-"}, ${this.city ?? "-"}-${this.state ?? "-"}";
+
   _ContactModelBase(
       {this.id,
       this.name,
