@@ -19,30 +19,53 @@ final $ContactsController = BindInject(
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$ContactsController on _ContactsControllerBase, Store {
-  final _$valueAtom = Atom(name: '_ContactsControllerBase.value');
+  final _$listAtom = Atom(name: '_ContactsControllerBase.list');
 
   @override
-  int get value {
-    _$valueAtom.reportRead();
-    return super.value;
+  ObservableList<ContactModel> get list {
+    _$listAtom.reportRead();
+    return super.list;
   }
 
   @override
-  set value(int value) {
-    _$valueAtom.reportWrite(value, super.value, () {
-      super.value = value;
+  set list(ObservableList<ContactModel> value) {
+    _$listAtom.reportWrite(value, super.list, () {
+      super.list = value;
     });
+  }
+
+  final _$contactAtom = Atom(name: '_ContactsControllerBase.contact');
+
+  @override
+  ContactModel get contact {
+    _$contactAtom.reportRead();
+    return super.contact;
+  }
+
+  @override
+  set contact(ContactModel value) {
+    _$contactAtom.reportWrite(value, super.contact, () {
+      super.contact = value;
+    });
+  }
+
+  final _$addContactAsyncAction =
+      AsyncAction('_ContactsControllerBase.addContact');
+
+  @override
+  Future addContact() {
+    return _$addContactAsyncAction.run(() => super.addContact());
   }
 
   final _$_ContactsControllerBaseActionController =
       ActionController(name: '_ContactsControllerBase');
 
   @override
-  void increment() {
+  dynamic createContact() {
     final _$actionInfo = _$_ContactsControllerBaseActionController.startAction(
-        name: '_ContactsControllerBase.increment');
+        name: '_ContactsControllerBase.createContact');
     try {
-      return super.increment();
+      return super.createContact();
     } finally {
       _$_ContactsControllerBaseActionController.endAction(_$actionInfo);
     }
@@ -51,7 +74,8 @@ mixin _$ContactsController on _ContactsControllerBase, Store {
   @override
   String toString() {
     return '''
-value: ${value}
+list: ${list},
+contact: ${contact}
     ''';
   }
 }

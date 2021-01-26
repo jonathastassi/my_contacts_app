@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_contacts_app/app/modules/contacts/contacts_controller.dart';
+import 'package:my_contacts_app/app/modules/contacts/models/contact_model.dart';
 import 'package:my_contacts_app/app/shared/layout/drawer_menu.dart';
 
 class ContactListPage extends StatefulWidget {
@@ -52,33 +54,23 @@ class _ContactListPageState
         centerTitle: true,
       ),
       drawer: DrawerMenu(),
-      body: ListView(
-        children: [
-          _buildContactItem(),
-          _buildContactItem(),
-          _buildContactItem(),
-          _buildContactItem(),
-          _buildContactItem(),
-          _buildContactItem(),
-          _buildContactItem(),
-          _buildContactItem(),
-          _buildContactItem(),
-          _buildContactItem(),
-          _buildContactItem(),
-          _buildContactItem(),
-          _buildContactItem(),
-          _buildContactItem(),
-          _buildContactItem(),
-          _buildContactItem(),
-          _buildContactItem(),
-          _buildContactItem(),
-          _buildContactItem(),
-          _buildContactItem(),
-          _buildContactItem(),
-        ],
-      ),
+      body: Observer(builder: (_) {
+        if (controller.list.length == 0) {
+          return Center(
+            child: Text("Nenhum contato cadastrado!"),
+          );
+        }
+
+        return ListView.builder(
+          itemCount: controller.list.length,
+          itemBuilder: (BuildContext context, int index) {
+            return _buildContactItem(context, controller.list[index]);
+          },
+        );
+      }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          controller.createContact();
           Modular.to.pushNamed("/contacts/form");
         },
         child: Icon(Icons.add),
@@ -87,13 +79,13 @@ class _ContactListPageState
     );
   }
 
-  Widget _buildContactItem() {
+  Widget _buildContactItem(BuildContext context, ContactModel contact) {
     return Padding(
       padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
       child: ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         onTap: () {
-          _settingModalBottomSheet(context);
+          _settingModalBottomSheet(context, contact);
         },
         leading: CircleAvatar(
           child: Text(
@@ -104,7 +96,7 @@ class _ContactListPageState
           ),
         ),
         title: Text(
-          "Jonathas Tassi e Silva",
+          contact.name ?? "" + " " + contact.lastName ?? "",
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
@@ -116,15 +108,15 @@ class _ContactListPageState
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              "Rua Sargento Luiz Fioco, CEP 13323-777, Parque Imperial, Salto-SP",
+              "${contact.address ?? "-"} - ${contact.number ?? "-"}, CEP ${contact.postalCode ?? "-"}, ${contact.neighborhood ?? "-"}, ${contact.city ?? "-"}-${contact.state ?? "-"}",
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("11 94064-1278"),
-                Text("jonathastassi@hotmail.com")
+                Text(contact.phone ?? "-"),
+                Text(contact.email ?? "-")
               ],
             ),
           ],
@@ -133,7 +125,9 @@ class _ContactListPageState
     );
   }
 
-  void _settingModalBottomSheet(context) {
+  void _settingModalBottomSheet(BuildContext ctx, ContactModel contact) {
+    controller.setContact(contact);
+
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -203,8 +197,82 @@ class _ContactListPageState
                     height: 30,
                   ),
                   Row(
-                    children: [],
-                  )
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      FlatButton(
+                        onPressed: () async {
+                          Modular.to.pop();
+                        },
+                        child: Row(
+                          children: [
+                            Icon(Icons.edit),
+                            Text("Editar"),
+                          ],
+                        ),
+                      ),
+                      FlatButton(
+                        onPressed: () async {
+                          if (await controller.removeContact() > 0) {
+                            Modular.to.pop();
+                          }
+                        },
+                        child: Row(
+                          children: [
+                            Icon(Icons.delete),
+                            Text("Deletar"),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 70,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      FlatButton(
+                        onPressed: () async {
+                          Modular.to.pop();
+                        },
+                        child: Row(
+                          children: [
+                            Icon(Icons.phone),
+                            Text("Ligar"),
+                          ],
+                        ),
+                      ),
+                      FlatButton(
+                        onPressed: () async {
+                          if (await controller.removeContact() > 0) {
+                            Modular.to.pop();
+                          }
+                        },
+                        child: Row(
+                          children: [
+                            Icon(Icons.map),
+                            Text("GPS"),
+                          ],
+                        ),
+                      ),
+                      FlatButton(
+                        onPressed: () async {
+                          if (await controller.removeContact() > 0) {
+                            Modular.to.pop();
+                          }
+                        },
+                        child: Row(
+                          children: [
+                            Icon(Icons.map),
+                            Text("E-mail"),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 40,
+                  ),
                 ],
               ),
             ));

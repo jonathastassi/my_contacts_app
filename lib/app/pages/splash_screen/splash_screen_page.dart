@@ -20,7 +20,7 @@ class _SplashScreenPageState
     super.initState();
 
     Future.delayed(Duration(seconds: 2)).then(
-      (value) => Modular.to.pushReplacementNamed('/initial/home'),
+      (value) => Modular.to.pushReplacementNamed('/contacts/list'),
     );
   }
 

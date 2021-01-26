@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_contacts_app/app/modules/contacts/contacts_controller.dart';
+import 'package:my_contacts_app/app/modules/contacts/models/contact_model.dart';
 import 'package:my_contacts_app/app/shared/components/card_component.dart';
 import 'package:my_contacts_app/app/shared/layout/drawer_menu.dart';
 
@@ -15,7 +17,7 @@ class ContactFormPage extends StatefulWidget {
 
 class _ContactFormPageState
     extends ModularState<ContactFormPage, ContactsController> {
-  //use 'controller' variable to access controller
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -29,19 +31,35 @@ class _ContactFormPageState
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Form(
+            key: _formKey,
             child: Column(
               children: <Widget>[
                 CardComponent(
                   title: "Dados Gerais",
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      TextFormField(
-                        keyboardType: TextInputType.text,
-                        decoration: InputDecoration(labelText: "Nome"),
+                      Observer(
+                        builder: (_) => TextFormField(
+                          onChanged: controller.contact.setName,
+                          initialValue: controller.contact.name,
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(labelText: "Nome"),
+                          validator: (value) {
+                            if (value == null) {
+                              return 'Informe o nome';
+                            }
+                            return null;
+                          },
+                        ),
                       ),
-                      TextFormField(
-                        keyboardType: TextInputType.text,
-                        decoration: InputDecoration(labelText: "Sobrenome"),
+                      Observer(
+                        builder: (_) => TextFormField(
+                          onChanged: controller.contact.setLastName,
+                          initialValue: controller.contact.lastName,
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(labelText: "Sobrenome"),
+                        ),
                       ),
                     ],
                   ),
@@ -51,26 +69,32 @@ class _ContactFormPageState
                   child: Column(
                     children: [
                       TextFormField(
+                        initialValue: controller.contact.postalCode,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(labelText: "CEP"),
                       ),
                       TextFormField(
+                        initialValue: controller.contact.address,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(labelText: "Rua"),
                       ),
                       TextFormField(
+                        initialValue: controller.contact.number,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(labelText: "Número"),
                       ),
                       TextFormField(
+                        initialValue: controller.contact.neighborhood,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(labelText: "Bairro"),
                       ),
                       TextFormField(
+                        initialValue: controller.contact.city,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(labelText: "Cidade"),
                       ),
                       TextFormField(
+                        initialValue: controller.contact.state,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(labelText: "Estado"),
                       ),
@@ -82,10 +106,12 @@ class _ContactFormPageState
                   child: Column(
                     children: [
                       TextFormField(
+                        initialValue: controller.contact.phone,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(labelText: "Telefone"),
                       ),
                       TextFormField(
+                        initialValue: controller.contact.email,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(labelText: "E-mail"),
                       ),
@@ -99,7 +125,10 @@ class _ContactFormPageState
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Modular.to.pop();
+          if (_formKey.currentState.validate()) {
+            controller.addContact();
+            Modular.to.pop();
+          }
         },
         child: Icon(Icons.check),
       ),

@@ -34,6 +34,10 @@ environment:
 
 dependencies:
   dio: ^3.0.10
+  moor: ^3.4.0
+  sqlite3_flutter_libs: 
+  path_provider:
+  path:
   flutter_mobx: ^1.1.0+2
   mobx: ^1.2.1+4
   flutter_modular: ^2.0.1
@@ -49,6 +53,7 @@ dev_dependencies:
   modular_codegen: 
   mobx_codegen: ^1.1.2
   build_runner: ^1.10.1
+  moor_generator: ^3.4.1
   flutter_test:
     sdk: flutter
 
