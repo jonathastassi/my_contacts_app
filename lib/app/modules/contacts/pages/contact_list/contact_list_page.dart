@@ -3,7 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_contacts_app/app/modules/contacts/contacts_controller.dart';
 import 'package:my_contacts_app/app/modules/contacts/models/contact_model.dart';
-import 'package:my_contacts_app/app/shared/layout/drawer_menu.dart';
+import 'package:my_contacts_app/app/shared/layout/bottom_menu.dart';
 
 class ContactListPage extends StatefulWidget {
   final String title;
@@ -53,7 +53,7 @@ class _ContactListPageState
         ],
         centerTitle: true,
       ),
-      drawer: DrawerMenu(),
+      bottomNavigationBar: BottomMenu(),
       body: Observer(builder: (_) {
         if (controller.list.length == 0) {
           return Center(
@@ -77,7 +77,7 @@ class _ContactListPageState
         },
         child: Icon(Icons.add),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
