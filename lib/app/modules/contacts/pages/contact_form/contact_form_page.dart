@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:my_contacts_app/app/modules/contacts/contacts_controller.dart';
 import 'package:my_contacts_app/app/shared/components/card_component.dart';
-import 'package:my_contacts_app/app/shared/layout/drawer_menu.dart';
+import 'package:my_contacts_app/app/shared/utils/phone_mask_formatter.dart';
 import 'package:my_contacts_app/app/shared/utils/utils.dart';
 
 class ContactFormPage extends StatefulWidget {
@@ -34,7 +33,6 @@ class _ContactFormPageState
         title: Text(widget.title),
         centerTitle: true,
       ),
-      drawer: DrawerMenu(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -129,13 +127,46 @@ class _ContactFormPageState
                       }),
                       Observer(builder: (_) {
                         _controllerState.text = controller.contact.state ?? "";
-                        return TextFormField(
-                          textInputAction: TextInputAction.next,
-                          controller: _controllerState,
-                          maxLength: 2,
-                          onChanged: controller.contact.setState,
-                          keyboardType: TextInputType.text,
+
+                        return DropdownButtonFormField(
                           decoration: InputDecoration(labelText: "Estado"),
+                          items: <String>[
+                            '',
+                            'AC',
+                            'AL',
+                            'AM',
+                            'AP',
+                            'BA',
+                            'CE',
+                            'DF',
+                            'ES',
+                            'GO',
+                            'MA',
+                            'MG',
+                            'MS',
+                            'MT',
+                            'PA',
+                            'PB',
+                            'PE',
+                            'PI',
+                            'PR',
+                            'RJ',
+                            'RN',
+                            'RO',
+                            'RR',
+                            'RS',
+                            'SC',
+                            'SE',
+                            'SP',
+                            'TO',
+                          ].map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          value: controller.contact.state,
+                          onChanged: controller.contact.setState,
                         );
                       }),
                     ],
@@ -147,9 +178,8 @@ class _ContactFormPageState
                     children: [
                       TextFormField(
                         textInputAction: TextInputAction.next,
-                        maxLength: 14,
                         onChanged: controller.contact.setPhone,
-                        inputFormatters: [Utils.maskCellPhone],
+                        inputFormatters: [PhoneMaskFormatter()],
                         keyboardType: TextInputType.phone,
                         decoration: InputDecoration(labelText: "Telefone"),
                       ),
