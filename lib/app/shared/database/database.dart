@@ -46,7 +46,13 @@ class MyDatabase extends _$MyDatabase {
   int get schemaVersion => 1;
 
   Future<List<Contact>> getAllContacts() async {
-    var list = await select(contacts).get();
+    var list = await (select(contacts)
+          ..orderBy(
+            [
+              (u) => OrderingTerm(expression: u.name.upper()),
+            ],
+          ))
+        .get();
     return list;
   }
 
