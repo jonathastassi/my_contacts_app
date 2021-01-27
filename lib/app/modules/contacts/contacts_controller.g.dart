@@ -65,12 +65,13 @@ mixin _$ContactsController on _ContactsControllerBase, Store {
     return _$removeContactAsyncAction.run(() => super.removeContact());
   }
 
-  final _$findPortalCodeAsyncAction =
-      AsyncAction('_ContactsControllerBase.findPortalCode');
+  final _$updatePostalCodeAsyncAction =
+      AsyncAction('_ContactsControllerBase.updatePostalCode');
 
   @override
-  Future findPortalCode() {
-    return _$findPortalCodeAsyncAction.run(() => super.findPortalCode());
+  Future updatePostalCode(String value) {
+    return _$updatePostalCodeAsyncAction
+        .run(() => super.updatePostalCode(value));
   }
 
   final _$_ContactsControllerBaseActionController =
@@ -93,17 +94,6 @@ mixin _$ContactsController on _ContactsControllerBase, Store {
         name: '_ContactsControllerBase.setContact');
     try {
       return super.setContact(contact);
-    } finally {
-      _$_ContactsControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic updatePostalCode(String value) {
-    final _$actionInfo = _$_ContactsControllerBaseActionController.startAction(
-        name: '_ContactsControllerBase.updatePostalCode');
-    try {
-      return super.updatePostalCode(value);
     } finally {
       _$_ContactsControllerBaseActionController.endAction(_$actionInfo);
     }

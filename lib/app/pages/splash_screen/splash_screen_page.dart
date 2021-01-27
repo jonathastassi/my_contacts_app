@@ -13,14 +13,12 @@ class SplashScreenPage extends StatefulWidget {
 
 class _SplashScreenPageState
     extends ModularState<SplashScreenPage, SplashScreenController> {
-  //use 'controller' variable to access controller
-
   @override
   void initState() {
     super.initState();
 
     Future.delayed(Duration(seconds: 2)).then(
-      (value) => Modular.to.pushReplacementNamed('/contacts/list'),
+      (value) => Modular.to.pushReplacementNamed('/home/initial'),
     );
   }
 

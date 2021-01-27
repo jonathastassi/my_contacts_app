@@ -27,13 +27,13 @@ abstract class _ContactsControllerBase with Store {
 
   populateList() async {
     list = <ContactModel>[].asObservable();
-    List<ContactModel> listLocal = await this.repository.getAll();
+    list.addAll(await this.repository.getAll());
 
-    if (listLocal == null) {
-      list = <ContactModel>[].asObservable();
-    } else {
-      list.addAll(listLocal);
-    }
+    // if (listLocal == null) {
+    //   list = <ContactModel>[].asObservable();
+    // } else {
+    //   list.addAll(listLocal);
+    // }
   }
 
   @action
@@ -51,7 +51,6 @@ abstract class _ContactsControllerBase with Store {
 
     if (id > 0) {
       _resetContact();
-      await this.populateList();
     }
   }
 
@@ -74,7 +73,6 @@ abstract class _ContactsControllerBase with Store {
     PostalCodeModel postalCodeModel =
         await this.postalCodeService.find(contact.postalCode);
 
-    print(postalCodeModel.logradouro);
     if (postalCodeModel != null) {
       contact.setAddress(postalCodeModel.logradouro);
       contact.setNeighborhood(postalCodeModel.bairro);

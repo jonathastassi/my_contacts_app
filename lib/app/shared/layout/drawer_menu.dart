@@ -12,7 +12,7 @@ class DrawerMenu extends StatelessWidget {
             title: Text("Início"),
             onTap: () {
               Navigator.pop(context);
-              Modular.to.pushReplacementNamed('/initial/home');
+              Modular.to.pushReplacementNamed('/home/initial');
             },
           ),
           ListTile(

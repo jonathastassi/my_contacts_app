@@ -1,3 +1,4 @@
+import 'package:my_contacts_app/app/modules/home/home_module.dart';
 import 'package:my_contacts_app/app/pages/splash_screen/splash_screen_page.dart';
 import 'pages/splash_screen/splash_screen_controller.dart';
 import 'package:my_contacts_app/app/modules/contacts/contacts_module.dart';
@@ -19,7 +20,7 @@ class AppModule extends MainModule {
           "/",
           child: (_, args) => SplashScreenPage(),
         ),
-        // ModularRouter("/initial", module: InitialModule()),
+        ModularRouter("/home", module: HomeModule()),
         ModularRouter("/contacts", module: ContactsModule()),
       ];
 
