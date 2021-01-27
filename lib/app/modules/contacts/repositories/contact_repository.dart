@@ -19,6 +19,11 @@ class ContactRepository implements IContactRepository {
   }
 
   @override
+  Future<int> update(ContactModel entry) async {
+    return await this.database.updateContact(entry);
+  }
+
+  @override
   Future<int> delete(ContactModel entry) async {
     return await this.database.removeContact(entry);
   }

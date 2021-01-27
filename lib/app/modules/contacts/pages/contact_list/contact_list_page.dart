@@ -4,6 +4,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_contacts_app/app/modules/contacts/contacts_controller.dart';
 import 'package:my_contacts_app/app/modules/contacts/models/contact_model.dart';
 import 'package:my_contacts_app/app/shared/layout/bottom_menu.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ContactListPage extends StatefulWidget {
   final String title;
@@ -107,28 +108,32 @@ class _ContactListPageState
             ),
           ),
         ),
-        title: Text(
-          contact.name ?? "" + " " + contact.lastName ?? "",
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
+        title: Observer(
+          builder: (_) => Text(
+            "${contact.name ?? "-"} ${contact.lastName ?? ""}",
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
           ),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              controller.contact.getAddress(),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+            Observer(
+              builder: (_) => Text(
+                "${contact.address ?? "-"} - ${contact.number ?? "-"}, CEP ${contact.postalCode ?? "-"}, ${contact.neighborhood ?? "-"}, ${contact.city ?? "-"}-${contact.state ?? "-"}",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(contact.phone ?? "-"),
-                Text(contact.email ?? "-")
+                Observer(builder: (_) => Text(contact.phone ?? "-")),
+                Observer(builder: (_) => Text(contact.email ?? "-")),
               ],
             ),
           ],
@@ -171,62 +176,167 @@ class _ContactListPageState
                       ),
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          "Logradouro: ${controller.contact.address ?? notExist} - Número: ${controller.contact.number ?? "-"}",
-                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      bottom: 10,
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(
+                                "Logradouro",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                "${controller.contact.address ?? notExist}, ${controller.contact.number ?? "-"}",
+                                style:
+                                    TextStyle(fontSize: 16, color: Colors.grey),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          "Bairro: ${controller.contact.neighborhood ?? notExist}",
-                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                        SizedBox(
+                          width: 10,
                         ),
-                      ),
-                    ],
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(
+                                "Bairro:",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                "${controller.contact.neighborhood ?? notExist}",
+                                style:
+                                    TextStyle(fontSize: 16, color: Colors.grey),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          "Cidade: ${controller.contact.city ?? notExist} - Estado: ${controller.contact.state ?? "-"}",
-                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      bottom: 10,
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(
+                                "Cidade:",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                "${controller.contact.city ?? notExist} - ${controller.contact.state ?? "-"}",
+                                style:
+                                    TextStyle(fontSize: 16, color: Colors.grey),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          "CEP: ${controller.contact.postalCode ?? notExist}",
-                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                        SizedBox(
+                          width: 10,
                         ),
-                      ),
-                    ],
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(
+                                "CEP:",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                "${controller.contact.postalCode ?? notExist}",
+                                style:
+                                    TextStyle(fontSize: 16, color: Colors.grey),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          "Telefone: ${controller.contact.phone ?? notExist}",
-                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      bottom: 10,
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(
+                                "Telefone:",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                "${controller.contact.phone ?? notExist}",
+                                style:
+                                    TextStyle(fontSize: 16, color: Colors.grey),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          "E-mail: ${controller.contact.email ?? notExist}",
-                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                        SizedBox(
+                          width: 10,
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 30,
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(
+                                "E-mail:",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                "${controller.contact.email ?? notExist}",
+                                style:
+                                    TextStyle(fontSize: 16, color: Colors.grey),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -234,6 +344,12 @@ class _ContactListPageState
                       FlatButton(
                         onPressed: () async {
                           Modular.to.pop();
+                          controller.setContact(contact);
+                          Modular.to
+                              .pushNamed("/contacts/form")
+                              .then((value) async {
+                            await this.controller.populateList();
+                          });
                         },
                         child: Row(
                           children: [
@@ -257,15 +373,13 @@ class _ContactListPageState
                       )
                     ],
                   ),
-                  SizedBox(
-                    height: 70,
-                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       FlatButton(
                         onPressed: () async {
                           Modular.to.pop();
+                          _callTo(contact.phone);
                         },
                         child: Row(
                           children: [
@@ -302,13 +416,18 @@ class _ContactListPageState
                       )
                     ],
                   ),
-                  SizedBox(
-                    height: 40,
-                  ),
                 ],
               ),
             ));
       },
     );
+  }
+
+  Future<void> _callTo(String phone) async {
+    if (await canLaunch('tel:$phone')) {
+      await launch('tel:$phone');
+    } else {
+      throw 'Could not launch $phone';
+    }
   }
 }

@@ -8,9 +8,7 @@ import 'package:my_contacts_app/app/shared/utils/phone_mask_formatter.dart';
 import 'package:my_contacts_app/app/shared/utils/utils.dart';
 
 class ContactFormPage extends StatefulWidget {
-  final String title;
-  const ContactFormPage({Key key, this.title = "Adicionando contato"})
-      : super(key: key);
+  const ContactFormPage({Key key}) : super(key: key);
 
   @override
   _ContactFormPageState createState() => _ContactFormPageState();
@@ -30,7 +28,11 @@ class _ContactFormPageState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Observer(
+          builder: (_) => Text(controller.contact.id == null
+              ? "Adicionando contato"
+              : "Alterando contato"),
+        ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -100,6 +102,7 @@ class _ContactFormPageState
                       }),
                       TextFormField(
                         textInputAction: TextInputAction.next,
+                        onChanged: controller.contact.setNumber,
                         initialValue: controller.contact.number,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(labelText: "Número"),
@@ -201,7 +204,7 @@ class _ContactFormPageState
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           if (_formKey.currentState.validate()) {
-            controller.addContact();
+            controller.submitFormContact();
             Modular.to.pop();
           }
         },

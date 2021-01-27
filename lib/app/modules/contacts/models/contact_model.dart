@@ -32,8 +32,8 @@ class ContactModel extends _ContactModelBase with _$ContactModel {
     return ContactModel(
       id: json['id'],
       name: json['name'],
-      lastName: json['last_name'],
-      postalCode: json['postal_code'],
+      lastName: json['lastName'],
+      postalCode: json['postalCode'],
       address: json['address'],
       number: json['number'],
       neighborhood: json['neighborhood'],
@@ -47,8 +47,8 @@ class ContactModel extends _ContactModelBase with _$ContactModel {
   Map<String, dynamic> toJson() => {
         'id': this.id,
         'name': this.name,
-        'last_name': this.lastName,
-        'postal_code': this.postalCode,
+        'lastName': this.lastName,
+        'postalCode': this.postalCode,
         'address': this.address,
         'number': this.number,
         'neighborhood': this.neighborhood,
@@ -125,9 +125,6 @@ abstract class _ContactModelBase with Store {
 
   @action
   setEmail(String value) => this.email = value;
-
-  String getAddress() =>
-      "${this.address ?? "-"} - ${this.number ?? "-"}, CEP ${this.postalCode ?? "-"}, ${this.neighborhood ?? "-"}, ${this.city ?? "-"}-${this.state ?? "-"}";
 
   _ContactModelBase(
       {this.id,

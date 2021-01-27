@@ -74,6 +74,27 @@ class MyDatabase extends _$MyDatabase {
     return generatedId;
   }
 
+  Future<int> updateContact(ContactModel entry) async {
+    return (update(contacts)
+          ..where(
+            (t) => t.id.equals(entry.id),
+          ))
+        .write(
+      ContactsCompanion(
+        name: Value(entry.name),
+        lastName: Value(entry.lastName),
+        postalCode: Value(entry.postalCode),
+        address: Value(entry.address),
+        number: Value(entry.number),
+        neighborhood: Value(entry.neighborhood),
+        city: Value(entry.city),
+        state: Value(entry.state),
+        phone: Value(entry.phone),
+        email: Value(entry.email),
+      ),
+    );
+  }
+
   Future<int> removeContact(ContactModel entry) async {
     return await (delete(contacts)..where((t) => t.id.equals(entry.id))).go();
   }

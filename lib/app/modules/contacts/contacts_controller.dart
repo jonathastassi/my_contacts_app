@@ -46,8 +46,13 @@ abstract class _ContactsControllerBase with Store {
   }
 
   @action
-  addContact() async {
-    var id = await repository.store(contact);
+  submitFormContact() async {
+    var id;
+    if (contact.id == null) {
+      id = await repository.store(contact);
+    } else {
+      id = await repository.update(contact);
+    }
 
     if (id > 0) {
       _resetContact();

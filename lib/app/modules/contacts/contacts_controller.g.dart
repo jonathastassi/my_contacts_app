@@ -49,12 +49,12 @@ mixin _$ContactsController on _ContactsControllerBase, Store {
     });
   }
 
-  final _$addContactAsyncAction =
-      AsyncAction('_ContactsControllerBase.addContact');
+  final _$submitFormContactAsyncAction =
+      AsyncAction('_ContactsControllerBase.submitFormContact');
 
   @override
-  Future addContact() {
-    return _$addContactAsyncAction.run(() => super.addContact());
+  Future submitFormContact() {
+    return _$submitFormContactAsyncAction.run(() => super.submitFormContact());
   }
 
   final _$removeContactAsyncAction =
