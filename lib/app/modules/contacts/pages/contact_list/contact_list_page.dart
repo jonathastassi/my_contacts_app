@@ -64,7 +64,8 @@ class _ContactListPageState
         return ListView.builder(
           itemCount: controller.list.length,
           itemBuilder: (BuildContext context, int index) {
-            return _buildContactItem(context, controller.list[index]);
+            ContactModel contact = controller.list[index];
+            return _buildContactItem(context, contact);
           },
         );
       }),
@@ -81,6 +82,15 @@ class _ContactListPageState
     );
   }
 
+  _generateInitials(String name, String lastName) {
+    name = name.trim().toUpperCase();
+    if (lastName == null) {
+      return name[0] + name[name.length - 1];
+    }
+    lastName = lastName.trim().toUpperCase();
+    return name[0] + lastName[0];
+  }
+
   Widget _buildContactItem(BuildContext context, ContactModel contact) {
     return Padding(
       padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
@@ -91,7 +101,7 @@ class _ContactListPageState
         },
         leading: CircleAvatar(
           child: Text(
-            "JT",
+            _generateInitials(contact.name, contact.lastName),
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
