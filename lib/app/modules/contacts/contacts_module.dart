@@ -1,6 +1,5 @@
-import 'package:dio/dio.dart';
+import 'package:my_contacts_app/app/modules/contacts/dao/contacts_dao.dart';
 import 'package:my_contacts_app/app/modules/contacts/repositories/interfaces/contact_repository_interface.dart';
-import 'package:my_contacts_app/app/shared/database/database.dart';
 import 'package:my_contacts_app/app/shared/services/postal_code_service.dart';
 import 'repositories/contact_repository.dart';
 import 'package:my_contacts_app/app/modules/contacts/pages/contact_form/contact_form_page.dart';
@@ -12,9 +11,8 @@ class ContactsModule extends ChildModule {
   @override
   List<Bind> get binds => [
         Bind<IContactRepository>((i) => ContactRepository()),
-        Bind((i) => MyDatabase()),
         Bind((i) => PostalCodeService(i.get())),
-        Bind((i) => Dio()),
+        Bind((i) => ContactsDao(i.get())),
         $ContactsController,
       ];
 
@@ -25,8 +23,8 @@ class ContactsModule extends ChildModule {
           child: (_, args) => ContactListPage(),
         ),
         ModularRouter(
-          "/form",
-          child: (_, args) => ContactFormPage(),
+          "/form/:id",
+          child: (_, args) => ContactFormPage(id: int.parse(args.params['id'])),
         ),
       ];
 

@@ -1,15 +1,15 @@
 import 'package:flutter_modular/flutter_modular_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:my_contacts_app/app/pages/splash_screen/splash_screen_controller.dart';
-import 'package:my_contacts_app/app/app_module.dart';
+import 'package:my_contacts_app/app/modules/splash_screen/splash_screen_controller.dart';
+import 'package:my_contacts_app/app/modules/splash_screen/splash_screen_module.dart';
 
 void main() {
-  initModule(AppModule());
+  initModule(SplashScreenModule());
   // SplashScreenController splashscreen;
   //
   setUp(() {
-    //     splashscreen = AppModule.to.get<SplashScreenController>();
+    //     splashscreen = SplashScreenModule.to.get<SplashScreenController>();
   });
 
   group('SplashScreenController Test', () {

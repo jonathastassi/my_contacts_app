@@ -14,7 +14,7 @@ class BottomMenu extends StatelessWidget {
             Expanded(
               child: InkWell(
                 onTap: () {
-                  Modular.to.pushReplacementNamed("/home/initial");
+                  Modular.to.pushReplacementNamed("/home");
                 },
                 child: Column(
                   mainAxisSize: MainAxisSize.min,

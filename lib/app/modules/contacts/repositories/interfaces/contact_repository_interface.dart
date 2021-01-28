@@ -6,4 +6,5 @@ abstract class IContactRepository implements Disposable {
   Future<int> update(ContactModel entry);
   Future<int> delete(ContactModel entry);
   Future<List<ContactModel>> getAll();
+  Future<ContactModel> getById(int id);
 }

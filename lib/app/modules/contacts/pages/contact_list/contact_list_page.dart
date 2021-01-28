@@ -73,7 +73,7 @@ class _ContactListPageState
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           controller.createContact();
-          Modular.to.pushNamed("/contacts/form").then((value) async {
+          Modular.to.pushNamed("/contacts/form/0").then((value) async {
             await this.controller.populateList();
           });
         },
@@ -88,8 +88,8 @@ class _ContactListPageState
     if (lastName == null) {
       return name[0] + name[name.length - 1];
     }
-    lastName = lastName.trim().toUpperCase();
-    return name[0] + lastName[0];
+    lastName = lastName.trim().trimLeft().trimRight().toUpperCase();
+    return name[0] + (lastName.length > 0 ? lastName[0] : "");
   }
 
   Widget _buildContactItem(BuildContext context, ContactModel contact) {
@@ -108,32 +108,28 @@ class _ContactListPageState
             ),
           ),
         ),
-        title: Observer(
-          builder: (_) => Text(
-            "${contact.name ?? "-"} ${contact.lastName ?? ""}",
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
+        title: Text(
+          "${contact.name ?? "-"} ${contact.lastName ?? ""}",
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
           ),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Observer(
-              builder: (_) => Text(
-                "${contact.address ?? "-"} - ${contact.number ?? "-"}, CEP ${contact.postalCode ?? "-"}, ${contact.neighborhood ?? "-"}, ${contact.city ?? "-"}-${contact.state ?? "-"}",
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
+            Text(
+              "${contact.address ?? "-"} - ${contact.number ?? "-"}, CEP ${contact.postalCode ?? "-"}, ${contact.neighborhood ?? "-"}, ${contact.city ?? "-"}-${contact.state ?? "-"}",
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Observer(builder: (_) => Text(contact.phone ?? "-")),
-                Observer(builder: (_) => Text(contact.email ?? "-")),
+                Text(contact.phone ?? "-"),
+                Text(contact.email ?? "-"),
               ],
             ),
           ],
@@ -143,7 +139,7 @@ class _ContactListPageState
   }
 
   void _settingModalBottomSheet(BuildContext ctx, ContactModel contact) {
-    controller.setContact(contact);
+    controller.setControllersWithModel(contact);
 
     showModalBottomSheet(
       context: context,
@@ -189,7 +185,7 @@ class _ContactListPageState
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               Text(
-                                "Logradouro",
+                                "Rua",
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Colors.grey,
@@ -344,12 +340,14 @@ class _ContactListPageState
                       FlatButton(
                         onPressed: () async {
                           Modular.to.pop();
-                          controller.setContact(contact);
                           Modular.to
-                              .pushNamed("/contacts/form")
-                              .then((value) async {
-                            await this.controller.populateList();
-                          });
+                              .pushNamed(
+                                  "/contacts/form/${contact.id.toString()}")
+                              .then(
+                            (value) async {
+                              await this.controller.populateList();
+                            },
+                          );
                         },
                         child: Row(
                           children: [

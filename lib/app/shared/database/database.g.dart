@@ -622,6 +622,9 @@ abstract class _$MyDatabase extends GeneratedDatabase {
   _$MyDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $ContactsTable _contacts;
   $ContactsTable get contacts => _contacts ??= $ContactsTable(this);
+  ContactsDao _contactsDao;
+  ContactsDao get contactsDao =>
+      _contactsDao ??= ContactsDao(this as MyDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override

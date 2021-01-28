@@ -2,18 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_contacts_app/app/shared/components/card_component.dart';
 import 'package:my_contacts_app/app/shared/layout/bottom_menu.dart';
-import 'initial_controller.dart';
+import 'home_controller.dart';
 
-class InitialPage extends StatefulWidget {
-  const InitialPage({Key key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  const HomePage({Key key}) : super(key: key);
 
   @override
-  _InitialPageState createState() => _InitialPageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _InitialPageState extends ModularState<InitialPage, InitialController> {
-  //use 'controller' variable to access controller
-
+class _HomePageState extends ModularState<HomePage, HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

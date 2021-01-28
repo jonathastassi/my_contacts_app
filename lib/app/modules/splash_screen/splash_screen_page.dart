@@ -18,7 +18,7 @@ class _SplashScreenPageState
     super.initState();
 
     Future.delayed(Duration(seconds: 2)).then(
-      (value) => Modular.to.pushReplacementNamed('/home/initial'),
+      (value) => Modular.to.pushReplacementNamed('/home'),
     );
   }
 

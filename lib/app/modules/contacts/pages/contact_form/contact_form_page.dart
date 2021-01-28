@@ -3,26 +3,34 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_contacts_app/app/modules/contacts/contacts_controller.dart';
+import 'package:my_contacts_app/app/modules/contacts/validators/validators_contact.dart';
 import 'package:my_contacts_app/app/shared/components/card_component.dart';
 import 'package:my_contacts_app/app/shared/utils/phone_mask_formatter.dart';
 import 'package:my_contacts_app/app/shared/utils/utils.dart';
 
 class ContactFormPage extends StatefulWidget {
-  const ContactFormPage({Key key}) : super(key: key);
+  final int id;
+
+  const ContactFormPage({Key key, this.id}) : super(key: key);
 
   @override
-  _ContactFormPageState createState() => _ContactFormPageState();
+  _ContactFormPageState createState() => _ContactFormPageState(id);
 }
 
 class _ContactFormPageState
     extends ModularState<ContactFormPage, ContactsController> {
   final _formKey = GlobalKey<FormState>();
+  final int id;
 
-  final TextEditingController _controllerAddress = new TextEditingController();
-  final TextEditingController _controllerNeighborhood =
-      new TextEditingController();
-  final TextEditingController _controllerCity = new TextEditingController();
-  final TextEditingController _controllerState = new TextEditingController();
+  _ContactFormPageState(this.id);
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    controller.getById(this.id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,29 +55,18 @@ class _ContactFormPageState
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Observer(
-                        builder: (_) => TextFormField(
-                          textInputAction: TextInputAction.next,
-                          onChanged: controller.contact.setName,
-                          initialValue: controller.contact.name,
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(labelText: "Nome"),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Informe o nome';
-                            }
-                            return null;
-                          },
-                        ),
+                      TextFormField(
+                        textInputAction: TextInputAction.next,
+                        controller: controller.nameController,
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(labelText: "Nome"),
+                        validator: ValidatorsContact.isRequired,
                       ),
-                      Observer(
-                        builder: (_) => TextFormField(
-                          textInputAction: TextInputAction.next,
-                          onChanged: controller.contact.setLastName,
-                          initialValue: controller.contact.lastName,
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(labelText: "Sobrenome"),
-                        ),
+                      TextFormField(
+                        textInputAction: TextInputAction.next,
+                        controller: controller.lastNameController,
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(labelText: "Sobrenome"),
                       ),
                     ],
                   ),
@@ -80,8 +77,7 @@ class _ContactFormPageState
                     children: [
                       TextFormField(
                         textInputAction: TextInputAction.next,
-                        onChanged: controller.updatePostalCode,
-                        initialValue: controller.contact.postalCode,
+                        controller: controller.postalCodeController,
                         keyboardType: TextInputType.text,
                         inputFormatters: [Utils.maskCEP],
                         decoration: InputDecoration(
@@ -89,89 +85,44 @@ class _ContactFormPageState
                           helperText: "Digite o CEP para preencher o endereço",
                         ),
                       ),
-                      Observer(builder: (_) {
-                        _controllerAddress.text =
-                            controller.contact.address ?? "";
-                        return TextFormField(
+                      Observer(
+                        builder: (_) => TextFormField(
                           textInputAction: TextInputAction.next,
-                          controller: _controllerAddress,
-                          onChanged: controller.contact.setAddress,
+                          controller: controller.addressController,
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(labelText: "Rua"),
-                        );
-                      }),
+                        ),
+                      ),
                       TextFormField(
                         textInputAction: TextInputAction.next,
-                        onChanged: controller.contact.setNumber,
-                        initialValue: controller.contact.number,
+                        controller: controller.numberController,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(labelText: "Número"),
                       ),
-                      Observer(builder: (_) {
-                        _controllerNeighborhood.text =
-                            controller.contact.neighborhood ?? "";
-                        return TextFormField(
+                      Observer(
+                        builder: (_) => TextFormField(
                           textInputAction: TextInputAction.next,
-                          controller: _controllerNeighborhood,
-                          onChanged: controller.contact.setNeighborhood,
+                          controller: controller.neighborhoodController,
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(labelText: "Bairro"),
-                        );
-                      }),
-                      Observer(builder: (_) {
-                        _controllerCity.text = controller.contact.city ?? "";
-                        return TextFormField(
+                        ),
+                      ),
+                      Observer(
+                        builder: (_) => TextFormField(
                           textInputAction: TextInputAction.next,
-                          controller: _controllerCity,
-                          onChanged: controller.contact.setCity,
+                          controller: controller.cityController,
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(labelText: "Cidade"),
-                        );
-                      }),
-                      Observer(builder: (_) {
-                        _controllerState.text = controller.contact.state ?? "";
-
-                        return DropdownButtonFormField(
+                        ),
+                      ),
+                      Observer(
+                        builder: (_) => TextFormField(
+                          textInputAction: TextInputAction.next,
+                          controller: controller.stateController,
+                          keyboardType: TextInputType.text,
                           decoration: InputDecoration(labelText: "Estado"),
-                          items: <String>[
-                            '',
-                            'AC',
-                            'AL',
-                            'AM',
-                            'AP',
-                            'BA',
-                            'CE',
-                            'DF',
-                            'ES',
-                            'GO',
-                            'MA',
-                            'MG',
-                            'MS',
-                            'MT',
-                            'PA',
-                            'PB',
-                            'PE',
-                            'PI',
-                            'PR',
-                            'RJ',
-                            'RN',
-                            'RO',
-                            'RR',
-                            'RS',
-                            'SC',
-                            'SE',
-                            'SP',
-                            'TO',
-                          ].map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                          value: controller.contact.state,
-                          onChanged: controller.contact.setState,
-                        );
-                      }),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -181,15 +132,14 @@ class _ContactFormPageState
                     children: [
                       TextFormField(
                         textInputAction: TextInputAction.next,
-                        onChanged: controller.contact.setPhone,
                         inputFormatters: [PhoneMaskFormatter()],
+                        controller: controller.phoneController,
                         keyboardType: TextInputType.phone,
                         decoration: InputDecoration(labelText: "Telefone"),
                       ),
                       TextFormField(
                         textInputAction: TextInputAction.send,
-                        onChanged: controller.contact.setEmail,
-                        initialValue: controller.contact.email,
+                        controller: controller.emailController,
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(labelText: "E-mail"),
                       ),
