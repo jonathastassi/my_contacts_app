@@ -1,17 +1,10 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_contacts_app/app/modules/contacts/dao/contacts_dao.dart';
 import 'package:my_contacts_app/app/modules/contacts/models/contact_model.dart';
-import 'package:my_contacts_app/app/shared/database/database.dart';
 import 'interfaces/contact_repository_interface.dart';
 
 class ContactRepository implements IContactRepository {
   final ContactsDao dao = Modular.get();
-
-  //dispose will be called automatically
-  @override
-  void dispose() {
-    this.dao.dispose();
-  }
 
   @override
   Future<int> store(ContactModel entry) async {

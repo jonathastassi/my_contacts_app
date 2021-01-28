@@ -14,10 +14,6 @@ class ContactsDao extends DatabaseAccessor<MyDatabase> with _$ContactsDaoMixin {
   // of this object.
   ContactsDao(MyDatabase db) : super(db);
 
-  void dispose() {
-    this.db.close();
-  }
-
   Future<Contact> getContactById(int id) async {
     var entity =
         await (select(contacts)..where((tbl) => tbl.id.equals(id))).getSingle();

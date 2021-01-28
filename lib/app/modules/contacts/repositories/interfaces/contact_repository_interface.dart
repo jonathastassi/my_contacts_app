@@ -1,7 +1,6 @@
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_contacts_app/app/modules/contacts/models/contact_model.dart';
 
-abstract class IContactRepository implements Disposable {
+abstract class IContactRepository {
   Future<int> store(ContactModel entry);
   Future<int> update(ContactModel entry);
   Future<int> delete(ContactModel entry);
