@@ -4,7 +4,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_contacts_app/app/modules/contacts/contacts_controller.dart';
 import 'package:my_contacts_app/app/modules/contacts/models/contact_model.dart';
 import 'package:my_contacts_app/app/shared/layout/bottom_menu.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:my_contacts_app/app/shared/utils/url_launcher.dart';
 
 class ContactListPage extends StatefulWidget {
   final String title;
@@ -85,11 +85,11 @@ class _ContactListPageState
 
   _generateInitials(String name, String lastName) {
     name = name.trim().toUpperCase();
-    if (lastName == null) {
+    if (lastName.isEmpty) {
       return name[0] + name[name.length - 1];
     }
     lastName = lastName.trim().trimLeft().trimRight().toUpperCase();
-    return name[0] + (lastName.length > 0 ? lastName[0] : "");
+    return name[0] + lastName[0];
   }
 
   Widget _buildContactItem(BuildContext context, ContactModel contact) {
@@ -375,10 +375,12 @@ class _ContactListPageState
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       FlatButton(
-                        onPressed: () async {
-                          Modular.to.pop();
-                          _callTo(contact.phone);
-                        },
+                        onPressed: contact.phone.isEmpty
+                            ? null
+                            : () async {
+                                Modular.to.pop();
+                                UrlLauncher.callTo(contact.phone);
+                              },
                         child: Row(
                           children: [
                             Icon(Icons.phone),
@@ -387,11 +389,16 @@ class _ContactListPageState
                         ),
                       ),
                       FlatButton(
-                        onPressed: () async {
-                          if (await controller.removeContact() > 0) {
-                            Modular.to.pop();
-                          }
-                        },
+                        onPressed: contact.address.isEmpty
+                            ? null
+                            : () async {
+                                UrlLauncher.openMap(
+                                    contact.address,
+                                    contact.number,
+                                    contact.city,
+                                    contact.state);
+                                Modular.to.pop();
+                              },
                         child: Row(
                           children: [
                             Icon(Icons.map),
@@ -400,11 +407,12 @@ class _ContactListPageState
                         ),
                       ),
                       FlatButton(
-                        onPressed: () async {
-                          if (await controller.removeContact() > 0) {
-                            Modular.to.pop();
-                          }
-                        },
+                        onPressed: contact.email.isEmpty
+                            ? null
+                            : () async {
+                                Modular.to.pop();
+                                UrlLauncher.emailTo(contact.phone);
+                              },
                         child: Row(
                           children: [
                             Icon(Icons.map),
@@ -419,13 +427,5 @@ class _ContactListPageState
             ));
       },
     );
-  }
-
-  Future<void> _callTo(String phone) async {
-    if (await canLaunch('tel:$phone')) {
-      await launch('tel:$phone');
-    } else {
-      throw 'Could not launch $phone';
-    }
   }
 }
