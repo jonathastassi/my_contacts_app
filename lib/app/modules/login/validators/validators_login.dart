@@ -3,10 +3,10 @@ class ValidatorsLogin {
     if (value.isEmpty) {
       return 'Informe o e-mail';
     }
-
-    if (value.contains("@")) {
+    if (!value.contains("@")) {
       return 'Informe um e-mail válido';
     }
+    return null;
   }
 
   static String validPassword(String value) {

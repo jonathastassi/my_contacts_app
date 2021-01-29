@@ -392,7 +392,7 @@ class _ContactListPageState
                             ? null
                             : () async {
                                 Modular.to.pop();
-                                UrlLauncher.emailTo(contact.phone);
+                                UrlLauncher.emailTo(contact.email);
                               },
                         child: Row(
                           children: [
