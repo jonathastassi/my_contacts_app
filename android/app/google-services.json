@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "882850204102",
+    "project_id": "mycontactapp-2fd5a",
+    "storage_bucket": "mycontactapp-2fd5a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882850204102:android:f3f647446d6d623fef8ac7",
+        "android_client_info": {
+          "package_name": "br.jonathastassi.my_contacts_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "882850204102-ro30q111a4r4uod3tpoe76m77u71s154.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.jonathastassi.my_contacts_app",
+            "certificate_hash": "18159753befed23019f3e96cd960687bad9a5803"
+          }
+        },
+        {
+          "client_id": "882850204102-m828effm4pf76fe6rmrgkajj1us6e22v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCeGJGccgDaWW0Qwv7tV45SwtOKKXdG420"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "882850204102-m828effm4pf76fe6rmrgkajj1us6e22v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

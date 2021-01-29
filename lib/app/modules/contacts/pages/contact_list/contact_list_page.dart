@@ -4,6 +4,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_contacts_app/app/modules/contacts/contacts_controller.dart';
 import 'package:my_contacts_app/app/modules/contacts/models/contact_model.dart';
 import 'package:my_contacts_app/app/shared/layout/bottom_menu.dart';
+import 'package:my_contacts_app/app/shared/layout/drawer_user.dart';
 import 'package:my_contacts_app/app/shared/utils/url_launcher.dart';
 
 class ContactListPage extends StatefulWidget {
@@ -16,44 +17,24 @@ class ContactListPage extends StatefulWidget {
 
 class _ContactListPageState
     extends ModularState<ContactListPage, ContactsController> {
-  Icon _searchIcon = new Icon(Icons.search);
-  Widget _appBarTitle = new Text("Contatos");
-  final TextEditingController _filter = new TextEditingController();
-
-  void _searchPressed() {
-    setState(() {
-      if (this._searchIcon.icon == Icons.search) {
-        this._searchIcon = new Icon(Icons.close);
-        this._appBarTitle = new TextField(
-          controller: _filter,
-          decoration: new InputDecoration(
-              border: InputBorder.none,
-              icon: Icon(
-                Icons.search,
-              ),
-              hintText: 'Buscar...'),
-        );
-      } else {
-        this._searchIcon = new Icon(Icons.search);
-        this._appBarTitle = new Text(widget.title);
-        _filter.clear();
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: _appBarTitle,
-        actions: [
-          IconButton(
-            icon: _searchIcon,
-            onPressed: _searchPressed,
-          )
-        ],
+        automaticallyImplyLeading: false,
+        title: Text("Contatos"),
         centerTitle: true,
+        actions: [
+          Builder(
+            builder: (context) => IconButton(
+              icon: Icon(Icons.person_pin),
+              onPressed: () => Scaffold.of(context).openEndDrawer(),
+              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+            ),
+          ),
+        ],
       ),
+      endDrawer: DrawerUser(),
       bottomNavigationBar: BottomMenu(),
       body: Observer(builder: (_) {
         if (controller.list.length == 0) {

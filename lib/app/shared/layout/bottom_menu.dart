@@ -37,7 +37,7 @@ class BottomMenu extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Icon(Icons.person_sharp),
+                    Icon(Icons.person_add),
                     Text("Contatos"),
                   ],
                 ),

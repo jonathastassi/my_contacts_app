@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_contacts_app/app/shared/components/card_component.dart';
 import 'package:my_contacts_app/app/shared/layout/bottom_menu.dart';
+import 'package:my_contacts_app/app/shared/layout/drawer_user.dart';
 import 'home_controller.dart';
 
 class HomePage extends StatefulWidget {
@@ -18,7 +19,17 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
       appBar: AppBar(
         title: Text("Início"),
         centerTitle: true,
+        actions: [
+          Builder(
+            builder: (context) => IconButton(
+              icon: Icon(Icons.person_pin),
+              onPressed: () => Scaffold.of(context).openEndDrawer(),
+              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+            ),
+          ),
+        ],
       ),
+      endDrawer: DrawerUser(),
       bottomNavigationBar: BottomMenu(),
       body: Column(
         children: <Widget>[
