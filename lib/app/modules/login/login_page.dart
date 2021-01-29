@@ -17,69 +17,91 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Form(
-                key: controller.formKey,
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        TextFormField(
-                          controller: controller.emailController,
-                          decoration: InputDecoration(
-                            labelText: "E-mail",
-                            hintText: "Digite o seu e-mail",
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(top: 30, bottom: 30),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.person_add,
+                      size: 100,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      "My Contacts",
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Form(
+                  key: controller.formKey,
+                  child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          TextFormField(
+                            controller: controller.emailController,
+                            decoration: InputDecoration(
+                              labelText: "E-mail",
+                              hintText: "Digite o seu e-mail",
+                            ),
+                            validator: ValidatorsLogin.validEmail,
                           ),
-                          validator: ValidatorsLogin.validEmail,
-                        ),
-                        TextFormField(
-                          obscureText: true,
-                          controller: controller.passwordController,
-                          decoration: InputDecoration(
-                            labelText: "Senha",
-                            hintText: "Digite a sua senha",
+                          TextFormField(
+                            obscureText: true,
+                            controller: controller.passwordController,
+                            decoration: InputDecoration(
+                              labelText: "Senha",
+                              hintText: "Digite a sua senha",
+                            ),
+                            validator: ValidatorsLogin.validPassword,
                           ),
-                          validator: ValidatorsLogin.validPassword,
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          height: 45,
-                          child: RaisedButton(
-                            onPressed: controller.loginWithEmailAndPassword,
-                            child: Text("Entrar"),
-                            color: Theme.of(context).primaryColor,
+                          SizedBox(
+                            height: 20,
                           ),
-                        ),
-                        SizedBox(
-                          height: 50,
-                        ),
-                        Container(
-                          height: 45,
-                          child: RaisedButton(
-                            color: Colors.grey[200],
-                            onPressed: controller.loginWithGoogle,
-                            child: Text("Entrar com o Google"),
+                          Container(
+                            height: 45,
+                            child: RaisedButton(
+                              onPressed: controller.loginWithEmailAndPassword,
+                              child: Text("Entrar"),
+                              color: Theme.of(context).primaryColor,
+                            ),
                           ),
-                        )
-                      ],
+                          SizedBox(
+                            height: 50,
+                          ),
+                          Container(
+                            height: 45,
+                            child: RaisedButton(
+                              color: Colors.grey[200],
+                              onPressed: controller.loginWithGoogle,
+                              child: Text("Entrar com o Google"),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
