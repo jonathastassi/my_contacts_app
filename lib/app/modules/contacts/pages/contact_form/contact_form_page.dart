@@ -78,7 +78,7 @@ class _ContactFormPageState
                       TextFormField(
                         textInputAction: TextInputAction.next,
                         controller: controller.postalCodeController,
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.number,
                         inputFormatters: [Utils.maskCEP],
                         decoration: InputDecoration(
                           labelText: "CEP",

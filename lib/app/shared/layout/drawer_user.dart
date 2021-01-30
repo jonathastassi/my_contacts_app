@@ -15,10 +15,12 @@ class DrawerUser extends StatelessWidget {
               accountName: _auth.user.displayName == null
                   ? null
                   : Text(_auth.user.displayName),
-              accountEmail: Text(_auth.user.email),
+              accountEmail: Text(_auth.user.email ?? "User"),
               currentAccountPicture: CircleAvatar(
                 child: _auth.user.photoURL == null
-                    ? Text(_auth.user.email[0].toUpperCase())
+                    ? Text(_auth.user.email != null
+                        ? _auth.user.email[0]
+                        : "User"[0].toUpperCase())
                     : Image.network(_auth.user.photoURL),
               ),
             ),

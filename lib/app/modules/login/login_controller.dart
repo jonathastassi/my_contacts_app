@@ -24,6 +24,18 @@ abstract class _LoginControllerBase with Store {
   var passwordController = TextEditingController();
 
   @action
+  Future authenticateWithBiometria() async {
+    try {
+      await auth.loginWithBiometria();
+      if (auth.user != null) {
+        Modular.to.pushReplacementNamed('/home');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @action
   Future loginWithEmailAndPassword() async {
     try {
       if (formKey.currentState.validate()) {

@@ -84,7 +84,18 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                             ),
                           ),
                           SizedBox(
-                            height: 50,
+                            height: 30,
+                          ),
+                          Container(
+                            height: 45,
+                            child: RaisedButton(
+                              color: Colors.grey[200],
+                              onPressed: controller.authenticateWithBiometria,
+                              child: Text("Entrar com a digital"),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
                           ),
                           Container(
                             height: 45,

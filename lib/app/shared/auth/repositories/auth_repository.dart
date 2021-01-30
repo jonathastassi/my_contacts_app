@@ -53,4 +53,9 @@ class AuthRepository implements IAuthRepository {
   Future logout() async {
     await _auth.signOut();
   }
+
+  @override
+  Future<User> getLoginAnnonymous() async {
+    return (await FirebaseAuth.instance.signInAnonymously()).user;
+  }
 }
