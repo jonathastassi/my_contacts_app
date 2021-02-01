@@ -21,7 +21,10 @@ class DrawerUser extends StatelessWidget {
                     ? Text(_auth.user.email != null
                         ? _auth.user.email[0]
                         : "User"[0].toUpperCase())
-                    : Image.network(_auth.user.photoURL),
+                    : null,
+                backgroundImage: _auth.user.photoURL == null
+                    ? null
+                    : NetworkImage(_auth.user.photoURL),
               ),
             ),
             ListTile(
